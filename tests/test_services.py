@@ -78,3 +78,54 @@ class TestConverterService:
 
         # Teardown
         self._clean_temp_files()
+
+    def test_json_to_csv_content(self):
+        """Prueba que el contenido del archivo JSON forme parte del archivo CSV"""
+        # Arrange
+        self._generate_temp_json()
+        sut = ConverterService()
+
+        # Resultado esperado
+        expected_result = "id,name,age\n"
+        expected_result += "1,John Doe,30\n"
+        expected_result += "2,Jane Smith,25\n"
+        expected_result += "3,Alice Johnson,35\n"
+
+        # Act
+        result = sut.json_to_csv("tests/test_files/test.json")
+
+        # Assert
+        with open(result, "r") as f:
+            content = f.read()
+            assert content == expected_result
+
+        # Teardown
+        self._clean_temp_files()
+
+    def test_csv_to_json_content(self):
+        """Prueba que el contenido del archivo CSV forme parte del archivo JSON"""
+        # Arrange
+        self._generate_temp_csv()
+        sut = ConverterService()
+
+        # Resultado esperado
+        expected_result = (
+            '[{"id": "1", " name": " John Doe", " age": " 30"},\n'
+        )
+        expected_result += (
+            '{"id": "2", " name": " Jane Smith", " age": " 25"},\n'
+        )
+        expected_result += (
+            '{"id": "3", " name": " Alice Johnson", " age": " 35"}]'
+        )
+
+        # Act
+        result = sut.csv_to_json("tests/test_files/test.csv")
+
+        # Assert
+        with open(result, "r") as f:
+            content = f.read()
+            assert content == expected_result
+
+        # Teardown
+        self._clean_temp_files()
