@@ -24,9 +24,12 @@ class FileService:
     def get_file_info(self, file_path: Path) -> FileInfo:
         stats = file_path.stat()
         mime_type = self._get_mime_type(file_path)
+        if hasattr(stats, "st_birthtime"):
+            created_at = datetime.fromtimestamp(stats.st_birthtime)
+        created_at = datetime.fromtimestamp(stats.st_ctime)
         return FileInfo(
             size=stats.st_size,
-            created_at=datetime.fromtimestamp(stats.st_birthtime),
+            created_at=created_at,
             mime_type=mime_type,
         )
 
