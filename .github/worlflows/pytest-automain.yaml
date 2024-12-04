@@ -1,4 +1,4 @@
-name: Test Automation
+name: Pytest Automation 
 
 # Los eventos que desencadenan el workflow son push y pull_request en la rama main
 on:
